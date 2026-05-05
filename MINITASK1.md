@@ -16,17 +16,20 @@
     rak_buku{
         int rak_id pk
         string nama_rak
+        int kapasitas
         
     }
     petugas{
         int petugas_id pk
         string nama
+        string gmail
+        string password
     }
     peminjaman{
         int peminjam_id pk
         string nama_peminjam
         date tanggal_peminjaman
-        date tangGal_pengembalian
+        date tanggal_pengembalian
         int petugas_id fk
     }
 
