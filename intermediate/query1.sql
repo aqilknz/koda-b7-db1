@@ -43,7 +43,7 @@ INSERT INTO movies (title, release_date, rating, director_id, genre_id) VALUES
 ('Interstellar', '2008-11-07', 8.7, 1, 1),
 ('Oppenheimer', '2020-07-21', 8.3, 1, 4),
 ('Barbie', '2020-07-21', 6.9, 2, 2),
-('Lady Bird', '2017-11-03', 7.4, 2, 4)
+('Lady Bird', '2017-11-03', 7.4, 2, 4),
 ('Tenet', '2020-08-26', 7.4, 1, 4),
 ('Dunkirk', '2017-07-21', 7.8, 1, 4),
 ('The Dark Knight', '2008-07-18', 9.0, 1, 4),
@@ -95,11 +95,11 @@ table genre;
 table actors;
 table movies_actors
 
+-- minitask 4
 SELECT id_movies, title, release_date, rating
 FROM movies
 WHERE extract(YEAR FROM release_date) = 2020;
 
--- minitask 4
 SELECT actors_id, first_name
 FROM actors
 WHERE first_name LIKE '%s';
@@ -108,49 +108,3 @@ SELECT id_movies, title, rating, release_date
 FROM movies
 -- WHERE rating >= 4.0 AND rating <= 8 AND extract(YEAR FROM release_date) >= 2004 AND extract(YEAR FROM release_date) <= 2010;
 WHERE rating BETWEEN 4.0 AND 8.0 AND release_date BETWEEN '2004-01-01' AND '2010-12-31 23:59:59'
-
--- minitask 5
-SELECT m.title, d.first_name, d.last_name, g.genre_name
-FROM movies m
-JOIN director d ON m.director_id = d.director_id
-JOIN genre g ON m.genre_id = d.director_id
-LIMIT 50;
-
-SELECT m.title, a.first_name, a.last_name, ma.role
-FROM movies m
-JOIN movies_actors ma ON m.id_movies = ma.movie_id
-JOIN actors a ON ma.actor_id = a.actors_id;
-
--- minitask 6
-SELECT d.first_name, d.last_name, COUNT(g.genre_id)
-FROM movies m
-JOIN director d ON m.director_id = d.director_id
-JOIN genre g ON m.genre_id = g.genre_id
-GROUP BY d.first_name, d.last_name;
-
-SELECT a.actors_id, a.first_name, a.last_name, COUNT(ma.movie_id) AS total_roles
-FROM actors a
-JOIN movies_actors ma ON a.actors_id = ma.actor_id
-GROUP BY a.actors_id, a.first_name, a.last_name
-HAVING COUNT(ma.movie_id) > 5
-ORDER BY total_roles DESC;
-
-SELECT d.first_name, d.last_name, COUNT(m.id_movies) AS total_movies
-FROM director d
-JOIN movies m ON d.director_id = m.director_id
-GROUP BY d.director_id, d.first_name, d.last_name
-ORDER BY total_movies DESC
-LIMIT 1;
-
-SELECT extract(YEAR FROM m.release_date ) AS Tahun, count(m.id_movies) AS jumlah_film
-FROM movies m
-GROUP BY Tahun
-ORDER BY jumlah_film DESC
-LIMIT 1
-
-SELECT m.title, STRING_AGG(a.first_name ||' '|| a.last_name || 'as' || ma.role ',' ORDER BY ma.role),  AS actors_with_roles
-FROM movies m
-LEFT JOIN movies_actors ma ON m.id_movies = ma.movie_id
-LEFT JOIN actors a ON ma.actor_id = a.actors_id
-GROUP BY m.title, m.id_movies
-ORDER BY m.id_movies
